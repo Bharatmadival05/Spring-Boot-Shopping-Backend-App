@@ -19,6 +19,7 @@ public class CustomerDaoServiceImpl implements CustomerDaoService {
 	ArrayList<Customer> customerList= new ArrayList <Customer>();
 	
 	private static Connection connection=null;
+	Customer currentCustomer=new Customer();
 	
 	public CustomerDaoServiceImpl() {
 		try {
@@ -84,8 +85,37 @@ public class CustomerDaoServiceImpl implements CustomerDaoService {
 
 	@Override
 	public boolean customerLoginValidation(String username, String password) {
-		// TODO Auto-generated method stub
-		return false;
+		System.out.println("username: "+username+"password: "+password);
+		boolean flag = false;
+		String loginQuery="SELECT * FROM customer WHERE username ='"+username+"';";
+		
+		PreparedStatement stmt;
+		try {
+			stmt = connection.prepareStatement(loginQuery);
+			ResultSet rs=stmt.executeQuery();
+			while(rs.next()) {
+				
+				if(rs.getString(8).equals(username) && rs.getString(9).equals(password)) {
+					flag=true;
+					currentCustomer.setCustmerid(rs.getInt(1));
+					currentCustomer.setCustomerName(rs.getString(2));
+					currentCustomer.setGender(rs.getString(3));
+					currentCustomer.setContactNo(rs.getLong(4));
+					currentCustomer.setEmail(rs.getString(5));
+					currentCustomer.setAddress(rs.getString(6));
+					currentCustomer.setPincode(rs.getInt(7));
+					currentCustomer.setUsername(rs.getString(8));
+					currentCustomer.setPassword(rs.getString(9));
+				}
+				else {
+					System.out.println("Invalid Customer data");
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return flag;
 	}
 	@Override
 	public void updateCustomer(Customer customer) {
