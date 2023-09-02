@@ -68,7 +68,7 @@ public class CustomerDaoServiceImpl implements CustomerDaoService {
 		 int pincode = customer.getPincode();
 		 String username=customer.getUsername();
 		 String password=customer.getPassword();
-		 String insertQuery="INSERT INTO customer VALUES("+custmerid+",'"+customerName+"','"+Gender+"',"+contactNo+",'"+email+"','"+address+"',"+pincode+",'"+username+"','"+password+")";
+		 String insertQuery="INSERT INTO customer VALUES("+custmerid+",'"+customerName+"','"+Gender+"',"+contactNo+",'"+email+"','"+address+"',"+pincode+",'"+username+"','"+password+"')";
 		
 		PreparedStatement stmt;
 		try {
@@ -122,7 +122,18 @@ public class CustomerDaoServiceImpl implements CustomerDaoService {
 	}
 	@Override
 	public void deleteCustomer(String username) {
-		// TODO Auto-generated method stub
+		String deleteQuery="DELETE FROM customer WHERE username='"+username+"';";
+		
+		
+		PreparedStatement stmt;
+		try {
+			stmt = connection.prepareStatement(deleteQuery);
+			stmt.executeUpdate();
+			System.out.println("Customer data deleted successfully ");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 }
